@@ -68,12 +68,10 @@
 
 										if (alertingMetric.PingHipChatFailCount.HasValue &&
 										    consecutiveFailCount == alertingMetric.PingHipChatFailCount.Value)
-											HipChatClient.SendMessage(alertingMetric.HipChatApiKey, alertingMetric.HipChatRoomName, "PulseBot",
-											                          alertingMetric.PagerDutyMessage, true, HipChatClient.BackgroundColor.red);
+											HipChatClient.SendMessage(alertingMetric.HipChatApiKey, alertingMetric.HipChatRoomName, "PulseBot", alertingMetric.PagerDutyMessage, true, HipChatClient.BackgroundColor.red);
 
 										if (alertingMetric.PingPagerDutyFailCount.HasValue &&
-										    (consecutiveFailCount == alertingMetric.PingPagerDutyFailCount.Value ||
-										     (DateTime.Now - alertingMetric.LastPagerDutyAlert.Value).TotalMinutes > 60))
+										    (consecutiveFailCount == alertingMetric.PingPagerDutyFailCount.Value || (alertingMetric.LastPagerDutyAlert.HasValue && (DateTime.Now - alertingMetric.LastPagerDutyAlert.Value).TotalMinutes > 60)))
 										{
 											Console.WriteLine("\r\nAlerting PagerDuty for {0} after {1} failures!", alertingMetric.PagerDutyMessage,
 											                  consecutiveFailCount);
